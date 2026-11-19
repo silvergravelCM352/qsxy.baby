@@ -10,6 +10,7 @@
     <link rel="apple-touch-icon" href="weblogo.webp">
     <!-- 预加载头图，提高下载优先级 -->
     <link rel="preload" as="image" href="头图.webp">
+
     <style>
         /* 基础设置 */
         :root {
@@ -374,6 +375,50 @@
         .deco-2:active {
             transform: scale(0.92) translateY(-6px);
         }
+
+/* 【新增】让 4.webp 装饰图可点击，并有悬停反馈 */
+        .deco-4 {
+            pointer-events: auto;
+            cursor: pointer;
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+
+        .deco-4:hover {
+            filter: drop-shadow(0 0 12px rgba(255, 105, 180, 0.9));
+        }
+
+        .deco-4:active {
+            transform: scale(0.92) translateY(-6px);
+        }
+
+        /* 【新增】底部右侧弹出的猪猪图片 */
+        .pig-popup-container {
+            position: fixed;
+            bottom: 0;
+            right: 10px;
+            z-index: 200;
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            pointer-events: none;
+        }
+
+        .pig-popup {
+            width: 120px;              /* 与 4.webp 宽度接近 */
+            height: auto;
+            display: block;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+            animation: pigPop 2s ease forwards;
+        }
+
+        @keyframes pigPop {
+            0%   { transform: translateY(100%) scale(0.5); opacity: 0; }
+            15%  { transform: translateY(0) scale(1);     opacity: 1; }
+            80%  { transform: translateY(0) scale(1);     opacity: 1; }
+            100% { transform: translateY(30px) scale(0.8); opacity: 0; }
+        }
+
+
     </style>
 </head>
 <body>
@@ -580,6 +625,30 @@
             }, 2000);
         }
 
+        // 【新增】随机猪猪弹窗
+        const pigImages = ['pig1.webp', 'pig2.webp', 'pig3.webp'];
+        let pigContainer = null;
+
+        function showPigPopup() {
+            if (!pigContainer) {
+                pigContainer = document.createElement('div');
+                pigContainer.className = 'pig-popup-container';
+                document.body.appendChild(pigContainer);
+            }
+
+            const img = document.createElement('img');
+            img.src = pigImages[Math.floor(Math.random() * pigImages.length)];
+            img.className = 'pig-popup';
+            img.alt = 'pig';
+            pigContainer.appendChild(img);
+
+            // 2 秒后移除（与动画时长一致）
+            setTimeout(() => {
+                img.remove();
+            }, 2000);
+        }
+
+
         // 初始化
         // 【优化】不再使用 window.onload，直接执行，不等待图片加载
         (function init() {
@@ -593,6 +662,13 @@
                     copyToClipboard('\\芽宝/\\芽宝/\\芽宝/\\芽宝/\\芽宝/');
                 });
             }
+
+            // 【新增】点击 4.webp 装饰图，在底部右侧弹出随机猪猪图片
+            const deco4 = document.querySelector('.deco-4');
+            if (deco4) {
+                deco4.addEventListener('click', showPigPopup);
+            }
+
 
             // 滚动监听
             const observer = new IntersectionObserver((entries) => {
