@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>芽宝的歌单</title>
+    <title>⭐芽宝的歌单⭐</title>
+
+    <!-- 【新增】网页 Logo（标签栏图标） -->
+    <link rel="icon" type="image/webp" href="weblogo.webp">
+    <link rel="apple-touch-icon" href="weblogo.webp">
     <!-- 预加载头图，提高下载优先级 -->
     <link rel="preload" as="image" href="头图.webp">
     <style>
@@ -356,27 +360,41 @@
             .group-title .letter { width: 35px; height: 35px; font-size: 16px; margin: 0 10px; }
             .link-container { flex-direction: column; gap: 10px; }
         }
+          /* 【新增】让 2.webp 这个装饰图可点击 */
+        .deco-2 {
+            pointer-events: auto;   /* 父级 .decorations 是 none，这里单独放开 */
+            cursor: pointer;
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+
+        .deco-2:hover {
+            filter: drop-shadow(0 0 12px rgba(255, 105, 180, 0.9));
+        }
+
+        .deco-2:active {
+            transform: scale(0.92) translateY(-6px);
+        }
     </style>
 </head>
 <body>
 
     <!-- 两侧装饰图 -->
     <div class="decorations left">
-        <img src="1.webp" class="deco-img deco-1" alt="装饰">
-        <img src="2.webp" class="deco-img deco-2" alt="装饰">
-        <img src="3.webp" class="deco-img deco-3" alt="装饰">
+        <img src="1.webp" class="deco-img deco-1" alt="01L">
+        <img src="2.webp" class="deco-img deco-2" id="deco2" alt="02L" title="点我一下(●'◡'●)">
+        <img src="3.webp" class="deco-img deco-3" alt="03L">
     </div>
     
     <div class="decorations right">
-        <img src="4.webp" class="deco-img deco-4" alt="装饰">
-        <img src="5.webp" class="deco-img deco-5" alt="装饰">
-        <img src="6.webp" class="deco-img deco-6" alt="装饰">
+        <img src="4.webp" class="deco-img deco-4" alt="04R">
+        <img src="5.webp" class="deco-img deco-5" alt="05R">
+        <img src="6.webp" class="deco-img deco-6" alt="06R">
     </div>
 
     <!-- 顶部区域 -->
     <header class="header-container">
         <!-- 启用异步解码，提高图片加载性能 -->
-        <img src="mainpic.webp" class="header-img" alt="芽宝的头图" decoding="async" fetchpriority="high">
+        <img src="mainpic.webp" class="header-img" alt="mainpic" decoding="async" fetchpriority="high">
         <div class="header-gradient"></div>
         
         <div class="title-area">
@@ -407,7 +425,7 @@
     </main>
 
     <!-- 复制成功提示框 -->
-    <div class="toast" id="toast">复制成功啦~</div>
+    <div class="toast" id="toast">复制成功啦(●'◡'●)~</div>
 
     <script>
         // 原始歌单文本数据
@@ -416,8 +434,8 @@
         不老梦 玻璃糖 半壶纱 不负人间 别找我麻烦 不知所措 不该 不怕 被驯服的象 不谓侠 白骨哀 白石溪 百年身 不完美女孩 不要说话 不朽之罪 不过问 百万个吻 不够成熟 笨的可以
         纯白 藏 处处D 处处傻 春不渡 春风吹 错位时空 蠢货 长安忆 春日酒 曾经的约定 吹灭小山河 吹梦到西洲 此生与你，不过相逢 春意红包 成全 匆匆那年 采薇 传说的世界 超级敏感 吵架歌 错的人 猜不透 残酷月光
         大喜 DNA 读心术 等你下课 带我离开 大鱼 当你 冬眠 大眠 倒带 东西 多远都要在一起 Don't go away 第二杯半价 东京不太热 大鱼 东流 东风志 多情种 多情岸 盗将行 打错了 第三人称 当时的我们 第一次爱的人 丹青客
-        恶作剧 寂寞烟火 
-        房间 翻花绳 腐草为萤 飞鸟和蝉 分手快乐 繁华唱遍 浮生未歇 反方向的钟 发如雪 粉红色的回忆 发呆 风吹麦浪
+        恶作剧 寂寞烟火 你曾是少年 
+        房间 翻花绳 腐草为萤 飞鸟和蝉 分手快乐 繁华唱遍 浮生未歇 反方向的钟 发如雪 粉红色的回忆 发呆 
         光 告白 过火 皈依搁浅 关键词 隔世信 告白文案 告白气球 故梦 干物妹小埋（中文版） 干物女WEIWEI 广寒宫 勾指起誓 光年之外 国境四方 刚好遇见你 该忘了
         画 红装 花海 红豆 黑猫 坏女孩 海芋恋 海棠 花 会呼吸的痛 红叶寺 红尘客栈 化身孤岛的鲸 画心 忽然之间 后来 红昭愿 环游星空 海海海 花的嫁纱 红颜旧 好想你 好想爱这个世界啊 红玫瑰 呼吸决定 红色高跟鞋 花枝春野 何日重到苏澜桥 还是你的笑容最可爱 红梅白雪知 后继者 黄昏晓 航向你的海岛 何必诗债换酒钱
         茧 江山雪 渐冷 酒醉的蝴蝶 借过 九万字 惊鸿一面 九张机 锦鲤抄 君临天下 寄明月 见爱响铃 就这样吗 今夜，果实成熟了
@@ -425,7 +443,7 @@
         笼 绿色 兰亭序 恋爱画板 恋爱告急 恋爱裁判 琉璃月 恋爱练习题 旅行的意义 淋雨一直走 恋爱困难少女 临水照花 轮回之境 旅客 恋爱吧魔法少女 浪漫爱 落霞云归 路过人间 Letting go
         芒种 迷人的危险 梦回还 明月天涯 迷迭香 眉间雪 满月已霜 漫步在岁月洪流 满天星辰不及你 明天，你好 美人鱼 梦里花 慢冷
         暖暖 难却 那么骄傲 那年 你曾是少年 你并不懂我 你不是真正的快乐 你一定要幸福 年轮 牛奶香槟 拿走了什么 女儿情 那女孩对我说 那些花儿 你给我听好 你有没有见过他 你就不要想起我 那些你很冒险的梦 你不能爱我 你眸中有一个宇宙 你的眼睛像星星 你在不在 霓虹甜心 你的微笑
-        欧若拉
+        欧若拉 不枉 万神纪 九九八十一 椿 鱼仔 时光书 
         破茧 泡沫 泼墨漓江 漂洋过海来看你 陪你看星星 平安奇妙物语
         青柠 起风了 亲爱的那并不是爱情 牵丝戏 情歌 去追一只鹿 青花瓷 奇妙能力歌 千梦 七秒钟的记忆 前男友的一百种死法 青灯 青城山下白素贞 芊芊 千古 青白 青蛇 千里邀月 青鸟衔风 恰雪来故 恰似你的温柔 千年之恋
         如果的事 如果当时 如见青山 人间不值得 人质 如果有来生 如果你也听说 日不落 热爱105°C的你 RingRingRing 任由爱 让风告诉你 如愿 人间
@@ -511,7 +529,8 @@
                     const copyBtn = document.createElement('button');
                     copyBtn.className = 'copy-btn';
                     copyBtn.textContent = '复制';
-                    copyBtn.onclick = () => copyToClipboard(song);
+                    // 【修改】复制时在歌名前加上 "点歌 "（含一个空格）
+                    copyBtn.onclick = () => copyToClipboard('点歌 ' + song);
 
                     itemDiv.appendChild(nameSpan);
                     itemDiv.appendChild(copyBtn);
@@ -567,6 +586,14 @@
             const groupedSongs = processSongs(rawData);
             renderSongs(groupedSongs);
             
+            // 【新增】点击 2.webp 装饰图复制应援文本
+            const deco2 = document.getElementById('deco2');
+            if (deco2) {
+                deco2.addEventListener('click', () => {
+                    copyToClipboard('\\芽宝/\\芽宝/\\芽宝/\\芽宝/\\芽宝/');
+                });
+            }
+
             // 滚动监听
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
